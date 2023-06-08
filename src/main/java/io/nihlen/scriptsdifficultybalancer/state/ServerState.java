@@ -42,7 +42,7 @@ public class ServerState extends PersistentState {
     }
 
     public static ServerState getServerState(LivingEntity player) {
-        return getServerState(player.world.getServer());
+        return getServerState(player.getWorld().getServer());
     }
 
     public static ServerState getServerState(MinecraftServer server) {

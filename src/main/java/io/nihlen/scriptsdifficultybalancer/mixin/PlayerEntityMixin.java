@@ -43,7 +43,7 @@ abstract public class PlayerEntityMixin extends LivingEntity {
 			return true;
 		}
 
-		return this.world.getGameRules().getBoolean(GameRules.KEEP_INVENTORY);
+		return this.getWorld().getGameRules().getBoolean(GameRules.KEEP_INVENTORY);
 	}
 
 	@Redirect(method = "getXpToDrop", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/GameRules;getBoolean(Lnet/minecraft/world/GameRules$Key;)Z"))
@@ -55,7 +55,7 @@ abstract public class PlayerEntityMixin extends LivingEntity {
 			return true;
 		}
 
-		return this.world.getGameRules().getBoolean(GameRules.KEEP_INVENTORY);
+		return this.getWorld().getGameRules().getBoolean(GameRules.KEEP_INVENTORY);
 	}
 
 	@Inject(method = "isBlockBreakingRestricted", at = @At("RETURN"), cancellable = true)

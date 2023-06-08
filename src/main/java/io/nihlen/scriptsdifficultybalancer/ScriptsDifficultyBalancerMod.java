@@ -18,6 +18,9 @@ import net.minecraft.util.Formatting;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.time.LocalDateTime;
+import java.util.function.Supplier;
+
 public class ScriptsDifficultyBalancerMod implements ModInitializer {
 	public static final String MODID = "scripts-difficulty-balancer";
 
@@ -91,7 +94,8 @@ public class ScriptsDifficultyBalancerMod implements ModInitializer {
 				break;
 		}
 
-		ctx.getSource().sendFeedback(Text.literal("Set " + name + " to " + enabled + " for " + player.getName().getString()), true);
+		Supplier<Text> text = () -> Text.literal("Set " + name + " to " + enabled + " for " + player.getName().getString());
+		ctx.getSource().sendFeedback(text, true);
 
 		serverState.markDirty();
 

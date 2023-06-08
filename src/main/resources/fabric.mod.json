@@ -1,0 +1,31 @@
+{
+	"schemaVersion": 1,
+	"id": "scripts-difficulty-balancer",
+	"version": "${version}",
+	"name": "Script's Difficulty Balancer",
+	"description": "Tweak gameplay behavior for specific players to balance difficulty.",
+	"authors": [
+		"Malcolm Nihlen"
+	],
+	"contact": {
+		"homepage": "https://github.com/scriptcoded/scripts-difficulty-balancer",
+		"sources": "https://github.com/scriptcoded/scripts-difficulty-balancer"
+	},
+	"license": "MIT",
+	"icon": "assets/scripts-difficulty-balancer/icon.png",
+	"environment": "*",
+	"entrypoints": {
+		"main": [
+			"io.nihlen.scriptsdifficultybalancer.ScriptsDifficultyBalancerMod"
+		]
+	},
+	"mixins": [
+		"scripts-difficulty-balancer.mixins.json"
+	],
+	"depends": {
+		"fabricloader": ">=0.14.19",
+		"minecraft": "~1.19.4",
+		"java": ">=17",
+		"fabric-api": "*"
+	}
+}

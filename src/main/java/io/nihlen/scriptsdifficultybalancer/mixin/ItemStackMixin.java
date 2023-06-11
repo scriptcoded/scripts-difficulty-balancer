@@ -1,17 +1,12 @@
 package io.nihlen.scriptsdifficultybalancer.mixin;
 
 import io.nihlen.scriptsdifficultybalancer.ItemStackExt;
-import io.nihlen.scriptsdifficultybalancer.ScriptsDifficultyBalancerMod;
 import io.nihlen.scriptsdifficultybalancer.state.ServerState;
-import net.fabricmc.fabric.api.object.builder.v1.entity.FabricEntityTypeBuilder;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.resource.featuretoggle.FeatureSet;
-import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.world.World;
-import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -21,6 +16,10 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(ItemStack.class)
 public abstract class ItemStackMixin implements ItemStackExt {
+
+	@Shadow public abstract int getDamage();
+
+	@Shadow public abstract boolean isDamageable();
 
 	private Entity owner;
 
@@ -46,19 +45,28 @@ public abstract class ItemStackMixin implements ItemStackExt {
 	}
 
 	@Inject(method = "inventoryTick", at = @At("HEAD"))
-	public void inventoryTick(World world, Entity entity, int slot, boolean selected, CallbackInfo callbackInfo) {
+	public void inventoryTickInject(World world, Entity entity, int slot, boolean selected, CallbackInfo callbackInfo) {
 		owner = entity;
 	}
 
 	@Inject(method = "isDamageable", at = @At("RETURN"), cancellable = true)
-	public void isDamageable(CallbackInfoReturnable<Boolean> cir) {
+	public void isDamageableInject(CallbackInfoReturnable<Boolean> cir) {
 		if (isBreakPrevented()) {
 			cir.setReturnValue(false);
 		}
 	}
 
+	@Inject(method = "isDamaged", at = @At("RETURN"), cancellable = true)
+	public void isDamagedInject(CallbackInfoReturnable<Boolean> cir) {
+		if (isBreakPrevented()) {
+			cir.setReturnValue(this.getDamage() > 0);
+		} else {
+			cir.setReturnValue(this.isDamageable() && this.getDamage() > 0);
+		}
+	}
+
 	@Inject(method = "isItemEnabled", at = @At("RETURN"), cancellable = true)
-	public void isItemEnabled(FeatureSet enabledFeatures, CallbackInfoReturnable<Boolean> cir) {
+	public void isItemEnabledInject(FeatureSet enabledFeatures, CallbackInfoReturnable<Boolean> cir) {
 		if (isBreakPrevented()) {
 			cir.setReturnValue(false);
 		}

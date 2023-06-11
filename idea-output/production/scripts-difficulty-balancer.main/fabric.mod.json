@@ -17,6 +17,9 @@
 	"entrypoints": {
 		"main": [
 			"io.nihlen.scriptsdifficultybalancer.ScriptsDifficultyBalancerMod"
+		],
+		"client": [
+			"io.nihlen.scriptsdifficultybalancer.ScriptsDifficultyBalancerModClient"
 		]
 	},
 	"mixins": [

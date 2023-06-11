@@ -8,6 +8,8 @@ import net.fabricmc.api.ModInitializer;
 import static net.minecraft.server.command.CommandManager.*;
 
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
+import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.command.argument.EntityArgumentType;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -67,10 +69,15 @@ public class ScriptsDifficultyBalancerMod implements ModInitializer {
 					)
 				)
 				.executes(context -> {
-					// For versions below 1.19, replace "Text.literal" with "new LiteralText".
-					context.getSource().sendMessage(Text.literal("Called /balance with no arguments"));
+					var player = context.getSource().getPlayer();
+					if (player == null) {
+						context.getSource().sendMessage(Text.literal("/balance can only be called by a player"));
+						return 1;
+					}
 
-					return 1;
+					ServerPlayNetworking.send(player, ScriptsDifficultyBalancerNetworkingConstants.OPEN_BALANCE_GUI, PacketByteBufs.empty());
+
+					return 0;
 				})
 		));
 	}

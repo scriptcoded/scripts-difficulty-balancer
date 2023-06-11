@@ -27,6 +27,7 @@ public abstract class ItemStackMixin implements ItemStackExt {
 	public boolean isBreakPrevented () {
 		if (owner == null) return false;
 		if (!(owner instanceof PlayerEntity)) return false;
+		if (owner.getWorld().isClient()) return false;
 
 		var serverState = ServerState.getServerState((PlayerEntity)owner);
 		var playerState = serverState.getPlayerState((PlayerEntity)owner);

@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.1](https://github.com/scriptcoded/scripts-difficulty-balancer/compare/v0.2.0...v0.2.1) (2023-06-11)
+
+
+### Bug Fixes
+
+* add icon ([605973d](https://github.com/scriptcoded/scripts-difficulty-balancer/commit/605973d2fea76a808bfba3011ccfc618f4ec3388))
+
 ## [0.2.0](https://github.com/scriptcoded/scripts-difficulty-balancer/compare/v0.1.0...v0.2.0) (2023-06-08)
 
 

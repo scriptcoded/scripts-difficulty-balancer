@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.5.0](https://github.com/scriptcoded/scripts-difficulty-balancer/compare/v0.4.0...v0.5.0) (2024-04-13)
+
+
+### Features
+
+* update to 1.20.3 ([1eedad9](https://github.com/scriptcoded/scripts-difficulty-balancer/commit/1eedad9e9f85922e83a75048dc6146dcd8742de6))
+
 ## [0.4.0](https://github.com/scriptcoded/scripts-difficulty-balancer/compare/v0.3.0...v0.4.0) (2024-04-13)
 
 

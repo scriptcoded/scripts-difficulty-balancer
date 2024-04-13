@@ -15,6 +15,13 @@ import java.util.UUID;
 public class ServerState extends PersistentState {
     public HashMap<UUID, PlayerState> players = new HashMap<>();
 
+    private final static Type<ServerState> type = new Type<>(
+            ServerState::new, // If there's no 'StateSaverAndLoader' yet create one
+            ServerState::createFromNbt, // If there is a 'StateSaverAndLoader' NBT, parse it with 'createFromNbt'
+            null // Supposed to be an 'DataFixTypes' enum, but we can just pass null
+    );
+
+
     @Override
     public NbtCompound writeNbt(NbtCompound nbt) {
         // Putting the 'players' hashmap, into the 'nbt' which will be saved.
@@ -55,10 +62,7 @@ public class ServerState extends PersistentState {
 
         // Calling this reads the file from the disk if it exists, or creates a new one and saves it to the disk
         // You need to use a unique string as the key. You should already have a MODID variable defined by you somewhere in your code. Use that.
-        return persistentStateManager.getOrCreate(
-                ServerState::createFromNbt,
-                ServerState::new,
-                ScriptsDifficultyBalancerMod.MODID);
+        return persistentStateManager.getOrCreate(type, ScriptsDifficultyBalancerMod.MODID);
     }
 
     public PlayerState getPlayerState(LivingEntity player) {

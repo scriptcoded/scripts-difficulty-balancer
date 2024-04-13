@@ -2,8 +2,6 @@ package io.nihlen.scriptsdifficultybalancer.state;
 
 import net.minecraft.nbt.NbtCompound;
 
-import java.util.UUID;
-
 public class PlayerState {
     public boolean keepInventory = false;
     public boolean keepXp = false;

@@ -1,7 +1,6 @@
 package io.nihlen.scriptsdifficultybalancer;
 
 import com.mojang.brigadier.arguments.BoolArgumentType;
-import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
 import io.nihlen.scriptsdifficultybalancer.state.ServerState;
 import net.fabricmc.api.ModInitializer;
@@ -11,14 +10,10 @@ import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.minecraft.command.argument.EntityArgumentType;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.text.ClickEvent;
-import net.minecraft.text.HoverEvent;
 import net.minecraft.text.Text;
-import net.minecraft.util.Formatting;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.time.LocalDateTime;
 import java.util.function.Supplier;
 
 public class ScriptsDifficultyBalancerMod implements ModInitializer {

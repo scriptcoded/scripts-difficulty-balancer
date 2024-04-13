@@ -1,6 +1,6 @@
 package io.nihlen.scriptsdifficultybalancer;
 
 public interface ItemStackExt {
-    public boolean isBreakPrevented ();
+    boolean scripts_difficulty_balancer$isBreakPrevented();
 }
 

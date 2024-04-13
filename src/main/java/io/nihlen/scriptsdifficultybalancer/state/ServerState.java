@@ -9,6 +9,7 @@ import net.minecraft.world.PersistentStateManager;
 import net.minecraft.world.World;
 
 import java.util.HashMap;
+import java.util.Objects;
 import java.util.UUID;
 
 public class ServerState extends PersistentState {
@@ -42,28 +43,26 @@ public class ServerState extends PersistentState {
     }
 
     public static ServerState getServerState(LivingEntity player) {
-        return getServerState(player.getWorld().getServer());
+        var server = player.getServer();
+        if (server == null) return null;
+        return getServerState(server);
     }
 
     public static ServerState getServerState(MinecraftServer server) {
         // First we get the persistentStateManager for the OVERWORLD
-        PersistentStateManager persistentStateManager = server
-                .getWorld(World.OVERWORLD).getPersistentStateManager();
+        PersistentStateManager persistentStateManager = Objects.requireNonNull(server
+                .getWorld(World.OVERWORLD)).getPersistentStateManager();
 
         // Calling this reads the file from the disk if it exists, or creates a new one and saves it to the disk
         // You need to use a unique string as the key. You should already have a MODID variable defined by you somewhere in your code. Use that.
-        ServerState serverState = persistentStateManager.getOrCreate(
+        return persistentStateManager.getOrCreate(
                 ServerState::createFromNbt,
                 ServerState::new,
                 ScriptsDifficultyBalancerMod.MODID);
-
-        return serverState;
     }
 
     public PlayerState getPlayerState(LivingEntity player) {
         // Either get the player by the uuid, or we don't have data for him yet, make a new player state
-        PlayerState playerState = this.players.computeIfAbsent(player.getUuid(), uuid -> new PlayerState());
-
-        return playerState;
+        return this.players.computeIfAbsent(player.getUuid(), uuid -> new PlayerState());
     }
 }

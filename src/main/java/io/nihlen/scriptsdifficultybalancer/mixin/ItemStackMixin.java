@@ -9,6 +9,7 @@ import net.minecraft.resource.featuretoggle.FeatureSet;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -21,14 +22,17 @@ public abstract class ItemStackMixin implements ItemStackExt {
 
 	@Shadow public abstract boolean isDamageable();
 
+	@Unique
 	private Entity owner;
 
 
-	public boolean isBreakPrevented () {
+	public boolean scripts_difficulty_balancer$isBreakPrevented() {
 		if (owner == null) return false;
 		if (!(owner instanceof PlayerEntity)) return false;
 
 		var serverState = ServerState.getServerState((PlayerEntity)owner);
+		if (serverState == null) return false;
+
 		var playerState = serverState.getPlayerState((PlayerEntity)owner);
 
 		if (!playerState.preventBreakingNamedTools) return false;
@@ -39,9 +43,8 @@ public abstract class ItemStackMixin implements ItemStackExt {
 
 		var damage = itemStack.getDamage();
 		var maxDamage = itemStack.getMaxDamage();
-		var isAboutToBreak = damage == maxDamage - 1;
 
-		return isAboutToBreak;
+		return damage == maxDamage - 1;
 	}
 
 	@Inject(method = "inventoryTick", at = @At("HEAD"))
@@ -51,14 +54,14 @@ public abstract class ItemStackMixin implements ItemStackExt {
 
 	@Inject(method = "isDamageable", at = @At("RETURN"), cancellable = true)
 	public void isDamageableInject(CallbackInfoReturnable<Boolean> cir) {
-		if (isBreakPrevented()) {
+		if (scripts_difficulty_balancer$isBreakPrevented()) {
 			cir.setReturnValue(false);
 		}
 	}
 
 	@Inject(method = "isDamaged", at = @At("RETURN"), cancellable = true)
 	public void isDamagedInject(CallbackInfoReturnable<Boolean> cir) {
-		if (isBreakPrevented()) {
+		if (scripts_difficulty_balancer$isBreakPrevented()) {
 			cir.setReturnValue(this.getDamage() > 0);
 		} else {
 			cir.setReturnValue(this.isDamageable() && this.getDamage() > 0);
@@ -67,7 +70,7 @@ public abstract class ItemStackMixin implements ItemStackExt {
 
 	@Inject(method = "isItemEnabled", at = @At("RETURN"), cancellable = true)
 	public void isItemEnabledInject(FeatureSet enabledFeatures, CallbackInfoReturnable<Boolean> cir) {
-		if (isBreakPrevented()) {
+		if (scripts_difficulty_balancer$isBreakPrevented()) {
 			cir.setReturnValue(false);
 		}
 	}
